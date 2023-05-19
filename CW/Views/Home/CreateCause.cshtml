@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "Create Cause Page";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<!-- BANNER HERE-->
+<div class="container-fluid  text-center create-cause-banner-container">
+    <div class="row title-row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div> <h2> <b>Create A Cause!</b></h2></div>
+            <div>
+                <p>
+                    <b>
+                        Please fill out the form below to create a cause. Change happens now! Thank you for your Voice.
+
+                    </b>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid create-cause-form-container">
+    <div class="container create-cause-container">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-7 offset-sm-2">
+                    <form class="cause_form" method="post" action="/Cause/CreateCause" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="title"><h2>Title:</h2></label>
+                            <input type="text" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="image"><h2>Image:</h2></label>
+                            <div class="input-group mb-3">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="image" name="image">
+                                    <label class="custom-file-label" for="image">Choose file</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Preview:</span>
+                                </div>
+                            </div>
+                            <div id="image-preview-container">
+                                <img id="image-preview" src="https://via.placeholder.com/400x400.png?text=Preview+Image" onload="this.style.display='block';" style="display: none;">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description"><h2>Description:</h2></label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label><h2>Select Category:</h2></label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Enviromental-Issues" id="Enviromental-Issues">
+                                <label class="form-check-label" for="Enviromental-Issues">
+                                    Environmental Issues
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Social-Justice" id="Social-Justice">
+                                <label class="form-check-label" for="Social-Justice">
+                                    Social Justice
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Political-Issues" id="Political-Issues">
+                                <label class="form-check-label" for="Political-Issues">
+                                    Political Issues
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Health-And-Wellness" id="Health-And-Wellness">
+                                <label class="form-check-label" for="Health-And-Wellness">
+                                    Health and Wellness
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Animal-Welfare" id="Animal-Welfare">
+                                <label class="form-check-label" for="Animal-Welfare">
+                                    Animal Welfare
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Education" id="Education">
+                                <label class="form-check-label" for="Education">
+                                    Education
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Humanitarian-Aid" id="Humanitarian-Aid">
+                                <label class="form-check-label" for="Humanitarian-Aid">
+                                    Humanitarian Aid
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Economic-Justice" id="Economic-Justice">
+                                <label class="form-check-label" for="Economic-Justice">
+                                    Economic Justice
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Gun-Control" id="Gun-Control">
+                                <label class="form-check-label" for="Gun-Control">
+                                    Gun Control
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="category" value="Immigration" id="Immigration">
+                                <label class="form-check-label" for="Immigration">
+                                    Immigration
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+    // Execute the function when the document is ready
+    $(document).ready(function () {
+        // Attach a change event listener to the image input element with the ID of "image"
+        $('#image').change(function () {
+            // Store the selected file in a variable
+            var file = $(this)[0].files[0];
+            // Check if a file was selected
+            if (file) {
+                // Create a new FileReader object
+                var reader = new FileReader();
+                // Define a function to be executed when the file has been loaded
+                reader.onload = function (e) {
+                    // Set the "src" attribute of the image element with the ID of "image-preview" to the file's data URL
+                    $('#image-preview').attr('src', e.target.result);
+                    // Display the image element with the ID of "image-preview"
+                    $('#image-preview').show();
+                }
+                // Read the file as a data URL
+                reader.readAsDataURL(file);
+            } else {
+                // If no file was selected, hide the image element with the ID of "image-preview"
+                $('#image-preview').hide();
+            }
+        });
+    });
+</script>
+The comments explain the purpose of each block of code, making it easier to understand the code and its functionality.
+
+
+
+
+
+

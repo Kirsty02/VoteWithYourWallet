@@ -1,0 +1,287 @@
+﻿@{
+    ViewData["Title"] = "Causes Page";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<CW.Data.Cause>
+
+@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var memberRole = HttpContextAccessor.HttpContext.Session.GetString("MemberRole");
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- BANNER HERE-->
+<div class="container-fluid  text-center cause-banner-container">
+    <div class="row title-row">
+        <div class="col-xs-12">
+            <div> <h2> <b>Causes</b></h2></div>
+        </div>
+        @*<div class="col-xs-12 ">
+        <div> <p>Here is a list of all the causes for the website. Please feel free to filter results to better find causes that interest you!</p></div>
+        </div>*@
+
+    </div>
+</div>
+
+<div class="container-fluid big-container">
+    <div class="row">
+        <div class="col-xs-8 col-sm-8 col-md-8">
+            <div class="container cause-container">
+                @foreach (var item in Model)
+                {
+                    <div class="row cause-card">
+                        <div class="col-xs-3 ">
+                            <div class=" img-responsive ">
+                                <img src="data:image;base64,@(item.Image?.Length > 0 ? Convert.ToBase64String(@item.Image) : "")">
+                            </div>
+                            
+                        </div>
+                        <div class="col-xs-4 text-justify ">
+                            <h2 class="card-title">@item.Title</h2>
+                            <div class="card-info">
+                                <p>
+                                    @item.Description
+                                    @if (HttpContextAccessor.HttpContext.Session.GetString("MemberName") != null && memberRole == "Admin")
+                                    {
+                                        <form asp-action="Delete" asp-controller="Cause" method="post" onsubmit="return confirm('Are you sure you want to delete this cause?');">
+                                            <input type="hidden" name="CauseId" value="@item.CauseId" />
+                                            <button type="submit" class="btn btn-danger btn-block">Delete</button>
+                                        </form>
+                                    }
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <h2 class="card-title"> Signed by:</h2>
+                            <div class="signatures-list">
+                                @if (item.Signatures != null)
+                                {
+                                    foreach (var signature in item.Signatures)
+                                    {
+                                        <p>@signature</p>
+                                    }
+                                }
+                            </div>
+                            
+                                    
+                           
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("MemberName") != null)
+                            {
+                                <button class="btn btn-success btn-block sign-button" data-causeid="@item.CauseId"> Sign</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-success btn-block " onclick="location.href='/Home/Account'"> Sign</button>
+
+                            }
+                            
+
+                        </div>
+                        <div class="col-xs-3 ">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item signature-count"> Signatures: <strong>@(item.Signatures?.Count ?? 0)</strong> of 50</li>
+                                        <li class="list-group-item card-stats"> Category: <strong> @item.Category</strong></li>
+                                        <li class="list-group-item">  Created: <strong> 22/12/22</strong></li>
+                                        <li class="list-group-item">
+                                            <p class="">
+                                                <!-- AddToAny BEGIN -->
+                                                <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+                                                    
+                                                    <a class="a2a_button_facebook"></a>
+                                                    <a class="a2a_button_twitter"></a>
+                                                    <a class="a2a_button_linkedin"></a>
+                                                    <a class="a2a_button_whatsapp"></a>
+                                                </div>
+                                                <!-- AddToAny END -->
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                
+
+                
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h2> Bottom of causes....</h2>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+
+
+        <!-- FILTER CONTAINER HERE-->
+        <div class="col-xs-2 ">
+            <div class="container-fluid filter-container">
+                <div class="row">
+                    <div class="col-xs-12 ">
+                        <h2> Filter Causes</h2>
+                        <p>Sort Causes</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Sort by newest
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Sort by most popular
+                            </label>
+                        </div>
+                        <p>Select Categories</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Enviromental Issues
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Social Justice
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Political Issues
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Health and Wellness
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Animal Welfare
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Education
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Humanitarian Aid
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Economic Justice
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Gun Control
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                            <label class="form-check-label" for="flexCheckChecked">
+                                Immigration
+                            </label>
+                        </div>
+                        <div class="row filter_create">
+                            <div class="col-xs-12 text-center">
+                                <button class="btn btn-info btn-lg btn-block"> Filter Results</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="container-fluid filter-container-bottom">
+                <div class="row filter_create">
+                    <div class="col-xs-10  col-xs-offset-1 text-center">
+                        <button class="btn btn-success btn-lg btn-block"> Create A Cause</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // Execute the function when the document is ready
+
+    $(document).ready(function () {
+        // Log a message to the console to confirm that jQuery is working
+        console.log("jQuery is working!");
+
+        // Attach a click event listener to the sign-button elements within the body
+        $('body').on('click', '.sign-button', function () {
+            // Store the current button object in a variable
+            var currentButton = $(this);
+
+            // Retrieve the causeId from the button's data attribute
+            var causeId = currentButton.data('causeid');
+
+            // Prompt the user to enter their name as a signature
+            var signature = prompt("Please enter your name");
+
+            // Check if the user entered a signature
+            if (signature) {
+                // Make an AJAX request to the /Cause/Sign endpoint with the causeId and signature data
+                $.ajax({
+                    type: 'POST',
+                    url: '/Cause/Sign',
+                    data: { causeId: causeId, signature: signature },
+                    success: function (data) {
+                        // If the AJAX request was successful, update the signatures list and count
+                        if (data.success) {
+                            // Find the signatures list within the closest cause-card element and append the new signature
+                            var signaturesList = currentButton.closest('.cause-card').find('.signatures-list');
+                            signaturesList.append('<p>' + data.signature + '</p>');
+
+                            // Update the signature count
+                            var signatureCount = currentButton.closest('.cause-card').find('.signature-count strong');
+                            signatureCount.text(data.count);
+                        } else {
+                            // If there was an error, display an alert with the error message
+                            alert(data.error);
+                        }
+                    },
+                    error: function () {
+                        // If there was an error with the AJAX request, display a general error message
+                        alert('An error occurred while processing your request.');
+                    }
+                });
+            }
+        });
+    });
+
+</script>
+
+

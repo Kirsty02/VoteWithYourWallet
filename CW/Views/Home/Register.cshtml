@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@using Microsoft.AspNetCore.Mvc.ViewFeatures
+@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Registered Page";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var name = HttpContextAccessor.HttpContext.Session.GetString("MemberName");
+}
+
+<div class="container-fluid  text-center create-cause-banner-container">
+    <div class="row title-row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div> <h2> <b>Welcome, @name!</b></h2></div>
+            <div>
+                <p>
+                    <b>
+                        Register page is yet to be done.
+
+                    </b>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
